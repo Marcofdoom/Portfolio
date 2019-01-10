@@ -1,0 +1,25 @@
+static String twoStringCompareBoolean(String s1, String s2) {
+        HashSet<Character> s1CharSet = new HashSet<>();
+
+        char[] s1chars = s1.toCharArray();
+
+        for (char character : s1chars) {
+            s1CharSet.add(character);
+        }
+
+        HashSet<Character> s2CharSet = new HashSet<>();
+
+        char[] s2chars = s2.toCharArray();
+
+        for (char character : s2chars) {
+            s2CharSet.add(character);
+        }
+
+        s1CharSet.retainAll(s2CharSet);
+
+        if (!s1CharSet.isEmpty()) {
+            return "YES";
+        } else {
+            return "NO";
+        }
+    }
