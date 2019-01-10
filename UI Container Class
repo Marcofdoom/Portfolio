@@ -1,0 +1,102 @@
+package uk.co.pixelbound.jigsaw.uicontainer;
+
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
+import uk.co.pixelbound.jigsaw.Main;
+import uk.co.pixelbound.jigsaw.asset.Assets;
+import uk.co.pixelbound.jigsaw.page.Page;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.run;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
+public abstract class UIContainer extends Table implements Assets {
+
+    /**
+     * Is UIContainer being displayed.
+     */
+    protected boolean display;
+
+    /**
+     * CIS UIContainer currently moving.
+     */
+    private boolean moving;
+
+    /**
+     * Reference to Asset Manager
+     */
+    protected AssetManager assetManager;
+
+    /**
+     * Skin holding the UI elements
+     */
+    protected Skin skin;
+    
+    protected Main main;
+    protected Page page;
+
+    public UIContainer(final Main main, Page page) {
+        this.main = main;
+        this.page = page;
+
+        assetManager = main.getAssetManager();
+        skin = main.getAssetManager().get(Assets.SKIN, Skin.class);
+
+        page.getUiController().getUiContainerList().add(this);
+        setTouchable(Touchable.enabled);
+    }
+
+    /**
+     * Hides this UIContainer.
+     */
+    public void hide() {
+        if (isDisplay() && !isMoving()) {
+            setMoving(true);
+            addAction(sequence(moveTo(-getWidth() / 2, main.getOrthographicCamera().viewportHeight / 2, 0.5f, Interpolation.swing), run(new Runnable() {
+                @Override
+                public void run() {
+                    setDisplay(false);
+                    setMoving(false);
+                    page.setButtonClicked(false);
+                }
+            })));
+        }
+    }
+
+    /**
+     * Displays this UIContainer.
+     */
+    public void display() {
+        if (!isDisplay() && !isMoving()) {
+            setMoving(true);
+            addAction(sequence(moveTo(-getWidth() / 2, -getHeight() / 2, 0.5f, Interpolation.swing), run(new Runnable() {
+                @Override
+                public void run() {
+                    setDisplay(true);
+                    setMoving(false);
+                    page.setButtonClicked(false);
+                }
+            })));
+        }
+    }
+
+    public synchronized boolean isDisplay() {
+        return display;
+    }
+
+    public synchronized void setDisplay(boolean display) {
+        this.display = display;
+    }
+
+    public synchronized boolean isMoving() {
+        return moving;
+    }
+
+    public synchronized void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+}
