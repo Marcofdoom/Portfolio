@@ -1,0 +1,110 @@
+package uk.co.pixelbound.jigsaw.manager;
+
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import uk.co.pixelbound.jigsaw.action.CustomFade;
+import uk.co.pixelbound.jigsaw.actor.ui.button.ButtonGroup;
+import uk.co.pixelbound.jigsaw.page.Page;
+import uk.co.pixelbound.jigsaw.uicontainer.UIContainer;
+
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+
+public class UIController {
+
+    /**
+     * Contains a list of all UIContainers on this page.
+     */
+    private List<UIContainer> uiContainerList;
+
+    /**
+     * Contains a list of all button elements on this page.
+     */
+    private List<ButtonGroup> buttonGroups;
+
+    /**
+     * Is there currently an active UIContainer being displayed.
+     */
+    private boolean uiDisplayed;
+    
+    private Page page;
+
+    public UIController(Page page) {
+        this.page = page;
+
+        uiContainerList = new ArrayList<UIContainer>();
+        buttonGroups = new ArrayList<ButtonGroup>();
+    }
+
+    /**
+     * Hides all UIContainers.
+     */
+    public void hideAllUI() {
+        for (UIContainer uIContainer : uiContainerList) {
+            if (uIContainer.isMoving()) {
+                return;
+            }
+        }
+
+        for (UIContainer uIContainer : uiContainerList) {
+            uIContainer.hide();
+        }
+        page.getTransitionGroup().addAction(CustomFade.fadeOut(0.35f));
+        page.getTransitionGroup().setTouchable(Touchable.disabled);
+        setUiDisplayed(false);
+    }
+
+    /**
+     * Display selected UIContainer.
+     *
+     * @param uiContainerToDisplay
+     */
+    public void displayUI(UIContainer uiContainerToDisplay) {
+
+        for (UIContainer uIContainer : uiContainerList) {
+            if (uiContainerToDisplay == uIContainer) {
+                continue;
+            }
+            uIContainer.hide();
+        }
+
+        if (uiContainerToDisplay.isDisplay()) {
+            uiContainerToDisplay.hide();
+            page.getTransitionGroup().addAction(sequence(CustomFade.fadeOut(0.35f), Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    page.getTransitionGroup().setTouchable(Touchable.disabled);
+                    setUiDisplayed(false);
+                }
+            })));
+        } else {
+            uiContainerToDisplay.display();
+            page.getTransitionGroup().addAction(sequence(CustomFade.fadeIn(0.35f), Actions.run(new Runnable() {
+                @Override
+                public void run() {
+                    page.getTransitionGroup().setTouchable(Touchable.enabled);
+                    setUiDisplayed(true);
+                }
+            })));
+        }
+    }
+
+    public synchronized boolean isUiDisplayed() {
+        return uiDisplayed;
+    }
+
+    public synchronized void setUiDisplayed(boolean uiDisplayed) {
+        this.uiDisplayed = uiDisplayed;
+    }
+
+    public synchronized List<UIContainer> getUiContainerList() {
+        return uiContainerList;
+    }
+
+    public synchronized List<ButtonGroup> getButtonGroups() {
+        return buttonGroups;
+    }
+}
