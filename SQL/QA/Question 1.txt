@@ -1,0 +1,9 @@
+-- Question 1
+select name, count_total from genres as t1
+join (select genre_id, count(genre_id) as count_total
+from genres_movies
+group by genre_id
+order by count(genre_id)) as t2
+ON t1.id = t2.genre_id
+order by count_total desc
+limit 1;

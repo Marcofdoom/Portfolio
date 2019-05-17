@@ -1,0 +1,9 @@
+-- Question 6
+select * from movies as t1
+join (select movie_id, avg(rating) as average_rating from ratings
+group by movie_id
+having count(rating) < 10
+) as t2
+on t1.id = t2.movie_id
+order by average_rating
+limit 5;

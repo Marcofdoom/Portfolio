@@ -1,0 +1,14 @@
+-- Question 4
+select t1.title,number_of_ratings from movies as t1
+join (select t4.movie_id,count(t3.rating) as number_of_ratings from occupations as t1
+join users as t2
+on t1.id = t2.occupation_id
+join ratings as t3
+on t2.id = t3.user_id
+join genres_movies as t4
+on t3.movie_id = t4.movie_id
+group by t4.movie_id
+order by number_of_ratings desc) as t2
+on t1.id = t2.movie_id
+order by number_of_ratings desc
+limit 5;
