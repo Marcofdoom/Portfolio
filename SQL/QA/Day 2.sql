@@ -1,22 +1,22 @@
-describe customer;
+-- DESCRIBE
+DESCRIBE customer;
 
 -- LIMIT
-select * from customer
-order by address
-limit 5
+SELECT * FROM customer
+ORDER BY address
+LIMIT 5
 
 -- BETWEEN
-select * from customer
-where customer_id
-between 2 and 6;
+SELECT * FROM customer
+WHERE customer_id
+BETWEEN 2 AND 6;
 
 -- LIKE
-select * from customer
-where email
-like "bill%";
+SELECT * FROM customer
+WHERE email
+LIKE "bill%";
 
-select * from customer;
-
+-- DISTINCT
 select distinct * from customer;
 
 select distinct * from customer
@@ -24,43 +24,50 @@ where city = "Manchester";
 
 select distinct city from customer;
 
+-- WHERE
 select * from customer where age >25;
 
+-- OR
+select * from customer
+where city = "Liverpool" OR city = "Birmingham";
+
+-- IN
+select * from customer
+where city in ("liverpool", "Birmingham");
+
+-- LIKE
+select * from customer
+where customer_name like '% s%';
+
+-- WHERE NOT
+select * from customer where not age = 10;
+
+-- WHERE NOT ALTERNATIVE
+select * from customer where age <> 10;
+
+-- ALTER and MODIFY table
 ALTER TABLE customer
 MODIFY COLUMN customer_id INT auto_increment;
 
+-- INSERT INTO VALUES
 INSERT INTO customer
 VALUES (0007, "Moe", "Glasgow", "moe@Email.com","***",51,"Glasgow"),
 (0006, "Barney", "liverpool", "barney@Email.com","*****",42,"liverpool");
 
-select * from customer
-where city = "Liverpool" OR city = "Birmingham";
+-- Aggregate Functions
+SELECT customer_id, COUNT(*) FROM customer;
 
-select * from customer
-where city in ("liverpool", "Birmingham");
+SELECT sum(age) FROM customer;
 
-select * from customer
-where customer_name like '% s%';
+SELECT min(age) FROM customer;
 
-select * from customer where not age = 10;
+SELECT max(age) FROM customer;
 
-select * from customer where age <> 10;
+SELECT avg(age) FROM customer;
 
-
-Aggregate Functions
-select customer_id, count(*)
-
-select sum(age) from customer;
-
-select min(age) from customer;
-
-select max(age) from customer;
-
-select avg(age) from customer;
-
-select customer_id, count(*)
-from customer
-group by customer_id;
+SELECT customer_id, COUNT(*)
+FROM customer
+GROUP BY customer_id;
 
 Nested Query
 select distinct city
