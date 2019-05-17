@@ -1,14 +1,19 @@
 describe customer;
 
--- Limit
+-- LIMIT
 select * from customer
 order by address
 limit 5
 
--- Between
+-- BETWEEN
 select * from customer
 where customer_id
 between 2 and 6;
+
+-- LIKE
+select * from customer
+where email
+like "bill%";
 
 select * from customer;
 
