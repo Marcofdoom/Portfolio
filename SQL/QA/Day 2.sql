@@ -1,5 +1,10 @@
 describe customer;
 
+-- Limit
+select * from customer
+order by address
+limit 5
+
 select * from customer;
 
 select distinct * from customer;
