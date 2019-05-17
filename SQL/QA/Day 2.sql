@@ -49,7 +49,7 @@ select * from customer where not age = 10;
 -- WHERE NOT ALTERNATIVE
 select * from customer where age <> 10;
 
--- ALTER and MODIFY table
+-- ALTER TABLE and MODIFY
 ALTER TABLE customer
 MODIFY COLUMN customer_id INT auto_increment;
 
@@ -58,7 +58,7 @@ INSERT INTO customer
 VALUES (0007, "Moe", "Glasgow", "moe@Email.com","***",51,"Glasgow"),
 (0006, "Barney", "liverpool", "barney@Email.com","*****",42,"liverpool");
 
--- Aggregate Functions
+-- AGGREGATE FUNCTIONS
 SELECT customer_id, COUNT(*) FROM customer;
 
 SELECT sum(age) FROM customer;
@@ -73,7 +73,7 @@ SELECT customer_id, COUNT(*)
 FROM customer
 GROUP BY customer_id;
 
-Nested Query
+-- NESTED QUERY
 select distinct city
 from customer
 where age >=20;
@@ -81,7 +81,7 @@ where age >=20;
 select * from customer
 where city in ("liverpool", "Birmingham");
 
-Nested Query
+-- NESTED QUERY
 select * from customer
 where city in (
 select distinct city
