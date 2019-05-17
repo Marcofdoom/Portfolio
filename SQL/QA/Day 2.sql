@@ -296,8 +296,7 @@ update orders
 set customer_id = 7
 where order_id = 7;
 
-MODULE 5 User Stories;
-
+-- MODULE 5 USER STORIES
 alter table product
 add column threshold int;
 
@@ -305,28 +304,28 @@ update product
 set threshold = 10
 where threshold is null;
 
-USER 1
+-- USER 1
 select product_name
 from product
 where stock_count > 0;
 
-USER 2
+-- USER 2
 insert into staff (first_name, last_name, role, email)
 values ("Stevo","Steverson","salesman","S.Steverson@nbgardens.net");
 
-USER 3
+-- USER 3
 insert into orders (status)
 values ("pending");
 
 insert into ordersproductbridge (order_id, product_id)
 values (8,1);
 
-USER 4
+-- USER 4
 update orders
 set status = "Delivered"
 where order_id = 1;
 
-USER 5
+-- USER 5
 select product_name
 from product
 where stock_count < threshold;
@@ -335,8 +334,7 @@ update product
 set stock_count = stock_count + 10
 where stock_count < threshold;
 
-USER 6
-
+-- USER 6
 create table supplierproductbridge (
 supplier_id int,
 product_id int,
@@ -366,7 +364,7 @@ ON t1.supplier_id = bridge.supplier_id
 JOIN product as t2
 ON bridge.product_id = t2.product_id;
 
-USER 7
+-- USER 7
 select * from customer as t1
 JOIN orders as t2
 ON t1.customer_id = t2.customer_id
@@ -385,10 +383,8 @@ values ("pending",4),
 ("pending",1),
 ("pending",2),
 ("pending",1);
-
-My own user story - 1
-How much is each order worth?
-
+              
+-- MY OWN USER STORY 1, HOW MUCH IS EACH ORDER WORTH
 select * from orders as t1
 join ordersproductbridge as bridge
 on t1.order_id = bridge.order_id
@@ -405,9 +401,7 @@ join product as t2
 on bridge.product_id = t2.product_id
 group by order_id;
 
-My own user story - 2
-how much has each customer spent
-
+-- MY OWN USER STORY 2, HOW MUCH HAS EACH CUSTOMER SPENT
 select t1.customer_id, sum(price) from orders as t1
 join ordersproductbridge as t2
 on t1.order_id = t2.order_id
