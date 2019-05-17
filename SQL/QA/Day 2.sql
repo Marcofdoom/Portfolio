@@ -16,6 +16,10 @@ SELECT * FROM customer
 WHERE email
 LIKE "bill%";
 
+SELECT * FROM customer
+WHERE city
+LIKE "_a%";
+
 -- DISTINCT
 select distinct * from customer;
 
