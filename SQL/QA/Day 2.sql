@@ -5,6 +5,11 @@ select * from customer
 order by address
 limit 5
 
+-- Between
+select * from customer
+where customer_id
+between 2 and 6;
+
 select * from customer;
 
 select distinct * from customer;
